@@ -44,7 +44,7 @@ paths:
                       item:
                         descriptor:
                           name: MRI Scan
-                          
+
               Get details of a specific healthcare service:
                 value:
                   context:
@@ -59,7 +59,7 @@ paths:
                     intent:
                       item:
                         id: 289edce4-d002-4962-b311-4c025e22b4f6
-                        
+
               Search by healthcare service provider name:
                 value:
                   context:
@@ -75,7 +75,7 @@ paths:
                       provider:
                         descriptor:
                           name: MAX Hospitals
-                          
+
               Get services of a specific healthcare service provider:
                 value:
                   context:
@@ -90,7 +90,7 @@ paths:
                     intent:
                       provider:
                         id: 675eecec-2da8-41e1-9303-3aeac992bb7e
-                        
+
               Search by healthcare services category name:
                 value:
                   context:
@@ -110,7 +110,7 @@ paths:
                         person:
                           descriptor:
                             name: Dr Asthana
-                            
+
               Get all healthcare services under a category:
                 value:
                   context:
@@ -125,7 +125,7 @@ paths:
                     intent:
                       category:
                         id: c63a05de-242f-4314-a748-323f71a1d3b1
-                        
+
               Search by Healthcare Professional Name:
                 value:
                   context:
@@ -142,7 +142,7 @@ paths:
                         person:
                           descriptor:
                             name: Dr Asthana
-                            
+
               Search by Healthcare professional ID:
                 value:
                   context:
@@ -158,7 +158,7 @@ paths:
                       fulfillment:
                         person:
                           cred: uhiId:98479873843985
-                          
+
               Search by Healthcare Fulfillment Service timings:
                 value:
                   context:
@@ -178,7 +178,7 @@ paths:
                         end:
                           time:
                             timestamp: 2021-03-23T11:00.000Z
-                            
+
               Search for teleconsultation services by symptom:
                 value:
                   context:
@@ -195,11 +195,11 @@ paths:
                         descriptor:
                           name: ent
                       tags:
-                        symptoms: cough,fever
-                        temperature": 101 C
-                        
-              Search for a cardiologist with 5+ years of experience and who can speak Kannada:
-                value:
+                        ./dhp-0_7_1.symptoms: cough,fever
+                        ./dhp-0_7_1.temperature': 101 C
+
+              ? Search for a cardiologist with 5+ years of experience and who can speak Kannada
+              : value:
                   context:
                     domain: nic2004:85110
                     country: IND
@@ -216,11 +216,11 @@ paths:
                       fulfillment:
                         person:
                           tags:
-                            exp: gt 5Y
-                            lang: kan
-                            
-              Search for a female doctor in Bangalore who speaks Hindi and is from Internal Medicine department:
-                value:
+                            ./dhp-0_7_1.exp: gt 5Y
+                            ./dhp-0_7_1.lang: kan
+
+              ? Search for a female doctor in Bangalore who speaks Hindi and is from Internal Medicine department
+              : value:
                   context:
                     domain: nic2004:85110
                     country: IND
@@ -234,12 +234,65 @@ paths:
                       fulfillment:
                         person:
                           tags:
-                            gender: female
-                            lang: hin
+                            ./dhp-0_7_1.gender: female
+                            ./dhp-0_7_1.lang: hin
                       category:
                         descriptor:
                           code: INTERNAL_MEDICINE
-                  
+
+              Search by Test  Name:
+                value:
+                  context:
+                    domain: nic2004:85195
+                    country: IND
+                    city: std:080
+                    action: search
+                    core_version: 0.7.1
+                    message_id: 91bb2711-4a94-4bc9-b94f-e4cddefcb7c9
+                    timestamp: '2021-03-23T10:00:40.065Z'
+                    BAP_URL: 'http://customer1.xyzdiagnostics.com'
+                    BAP_ID: '6b7eb2f8-9200-47a1-b639-b960d797b8d3'
+                  message:
+                    intent:
+                      item:
+                        descriptor:
+                          name: CBC
+              Details of a specific test after clicking on the product from:
+                value:
+                  context:
+                    domain: nic2004:85195
+                    country: IND
+                    city: std:080
+                    action: search
+                    core_version: 0.7.1
+                    message_id: 91bb2711-4a94-4bc9-b94f-e4cddefcb7c9
+                    timestamp: '2021-03-23T10:00:40.065Z'
+                    BAP_URI: 'http://customer1.xyzdiagnostics.com'
+                    BAP_ID: '6b7eb2f8-9200-47a1-b639-b960d797b8d3'
+                  message:
+                    intent:
+                      item:
+                        descriptor:
+                          code: c8cb92e9-4b40-4fb4-bec3-75f0b2cc68cb
+
+              Search by Diagnostic Lab Name name:
+                value:
+                  context:
+                    domain: nic2004:85195
+                    country: IND
+                    city: std:080
+                    action: search
+                    core_version: 0.7.1
+                    message_id: 91bb2711-4a94-4bc9-b94f-e4cddefcb7c9
+                    timestamp: '2021-03-23T10:00:40.065Z'
+                    BAP_URL: 'http://customer1.xyzdiagnostics.com'
+                    BAP_ID: '6b7eb2f8-9200-47a1-b639-b960d797b8d3'
+                  message:
+                    intent:
+                      provider:
+                        descriptor:
+                          name: XYZ Diagnostics Pvt Ltd.
+
       responses:
         '200':
           description: Acknowledgement of message received
@@ -255,10 +308,12 @@ paths:
                         $ref: '#/components/schemas/Ack'
                     required:
                       - ack
+                      - $ref '#/components/schemas/add_to_cart'
                   error:
                     $ref: '#/components/schemas/Error'
                 required:
                   - message
+
   /select:
     post:
       tags:
@@ -303,8 +358,8 @@ paths:
                 - context
                 - message
             examples:
-              Patient requests a quote for booking a consultation slot in a given doctor’s schedule:
-                value:
+              ? Patient requests a quote for booking a consultation slot in a given doctor`s schedule
+              : value:
                   context:
                     domain: nic2004:85110
                     country: IND
@@ -383,15 +438,15 @@ paths:
                         fulfillment:
                           $ref: '#/components/schemas/Fulfillment'
                         quote:
-                          $ref: '#/components/schemas/Quotation'  
+                          $ref: '#/components/schemas/Quotation'
                   required:
                     - order
               required:
                 - context
                 - message
             examples:
-              Patient provides any additional billing and fulfillment details and finalizes booking:
-                value:
+              ? Patient provides any additional billing and fulfillment details and finalizes booking
+              : value:
                   context:
                     domain: nic2004:85110
                     country: IND
@@ -466,7 +521,7 @@ paths:
                             id:
                               $ref: '#/components/schemas/Provider/properties/id'
                         state:
-                          $ref: '#/components/schemas/State'  
+                          $ref: '#/components/schemas/State'
                         items:
                           type: array
                           items:
@@ -579,8 +634,8 @@ paths:
               required:
                 - context
             examples:
-              Catalog of Doctors with their availability schedule for DIGITAL OPD Fulfillment:
-                value:
+              ? Catalog of Doctors with their availability schedule for DIGITAL OPD Fulfillment
+              : value:
                   context:
                     domain: nic2004:85110
                     country: IND
@@ -685,7 +740,7 @@ paths:
                                 name: Consultation
                               category_id: '1'
                               fulfillment_id: '4'
-                  
+
       responses:
         '200':
           description: Acknowledgement of message received
@@ -749,8 +804,8 @@ paths:
               required:
                 - context
             examples:
-              Patient receives a quote for booking a consultation slot in a given doctor’s schedule:
-                value:
+              ? Patient receives a quote for booking a consultation slot in a given doctor`s schedule
+              : value:
                   context:
                     domain: nic2004:85110
                     country: IND
@@ -789,10 +844,10 @@ paths:
                           currency: INR
                           value: '110'
                           breakup:
-                            - consultation: '100'
-                            - cgst: '5'
-                            - sgst: '5'
-                    
+                            - ./dhp-0_7_1.consultation: '100'
+                            - ./dhp-0_7_1.cgst: '5'
+                            - ./dhp-0_7_1.sgst: '5'
+
       responses:
         '200':
           description: Acknowledgement of message received
@@ -840,7 +895,7 @@ paths:
                             id:
                               $ref: '#/components/schemas/Provider/properties/id'
                         state:
-                          $ref: '#/components/schemas/State'  
+                          $ref: '#/components/schemas/State'
                         items:
                           type: array
                           items:
@@ -865,8 +920,8 @@ paths:
               required:
                 - context
             examples:
-              DHP Platform generates a booking and sends terms that require settlement to a bank account:
-                value:
+              ? DHP Platform generates a booking and sends terms that require settlement to a bank account
+              : value:
                   context:
                     domain: nic2004:85110
                     country: IND
@@ -878,7 +933,7 @@ paths:
                   message:
                     order:
                       id: '26492'
-                      state : "PROVISIONALLY_BOOKED"
+                      state: 'PROVISIONALLY_BOOKED'
                       provider:
                         id: '1'
                         descriptor:
@@ -919,15 +974,14 @@ paths:
                           currency: INR
                           value: '120'
                           breakup:
-                            - consultation: '100'
-                            - phr_handling_fees: '10'
-                            - cgst: '5'
-                            - sgst: '5'
+                            - ./dhp-0_7_1.consultation: '100'
+                            - ./dhp-0_7_1.phr_handling_fees: '10'
+                            - ./ind-gstin.cgst: '5'
+                            - ./ind-gstin.sgst: '5'
                       payment:
                         uri: payto://ban/98273982749428?amount=INR:110&ifsc=SBIN0000575&message=hello
                         type: ON-ORDER
                         status: PENDING
-                  
 
       responses:
         '200':
@@ -976,7 +1030,7 @@ paths:
                             id:
                               $ref: '#/components/schemas/Provider/properties/id'
                         state:
-                          $ref: '#/components/schemas/State'  
+                          $ref: '#/components/schemas/State'
                         items:
                           type: array
                           items:
@@ -1002,8 +1056,8 @@ paths:
               required:
                 - context
             examples:
-              DHP Platform agrees to fulfill the order and sends latest state of the booking:
-                value:
+              ? DHP Platform agrees to fulfill the order and sends latest state of the booking
+              : value:
                   context:
                     domain: nic2004:85110
                     country: IND
@@ -1053,22 +1107,22 @@ paths:
                             start: T10:15Z
                             end: T10:30Z
                         customer:
-                          id: uhi://health_id/61-8787-9274-4422
-                          "@abdm/org/phr_address": example@ndhm
+                          ./nha.health_id: 61-8787-9274-4422
+                          ./nha.phr_address: example@ndhm
                       quote:
                         price:
                           currency: INR
                           value: '120'
                           breakup:
-                            - consultation: '100'
-                            - phr_handling_fees: '10'
-                            - cgst: '5'
-                            - sgst: '5'
+                            - ./dhp-0_7_1.consultation: '100'
+                            - ./dhp-0_7_1.phr_handling_fees: '10'
+                            - ./ind-gstin.cgst: '5'
+                            - ./ind-gstin.sgst: '5'
                       payment:
                         uri: payto://ban/98273982749428?amount=INR:110&ifsc=SBIN0000575&message=hello
                         type: ON-ORDER
                         status: PAID
-                  
+
       responses:
         '200':
           description: Acknowledgement of message received
@@ -1165,24 +1219,24 @@ paths:
                             start: T10:15Z
                             end: T10:30Z
                         customer:
-                          health_id: 61-8787-9274-4422
-                          phr_address: example@ndhm
+                          ./dhp-0_7_1.health_id: 61-8787-9274-4422
+                          ./dhp-0_7_1.phr_address: example@ndhm
                         tags:
-                          teleconf_url: https://us06web.zoom.us/j/82071160538
+                          ./dhp-0_7_1.teleconf_url: https://us06web.zoom.us/j/82071160538
                       quote:
                         price:
                           currency: INR
                           value: '120'
                           breakup:
-                            - consultation: '100'
-                            - phr_handling_fees: '10'
-                            - cgst: '5'
-                            - sgst: '5'
+                            - ./dhp-0_7_1.consultation: '100'
+                            - ./dhp-0_7_1.phr_handling_fees: '10'
+                            - ./ind-gstin.cgst: '5'
+                            - ./ind-gstin.sgst: '5'
                       payment:
                         uri: payto://ban/98273982749428?amount=INR:110&ifsc=SBIN0000575&message=hello
                         type: ON-ORDER
                         status: PAID
-                        
+
               Consultation Started:
                 value:
                   context:
@@ -1234,24 +1288,24 @@ paths:
                             start: T10:15Z
                             end: T10:30Z
                         customer:
-                          health_id: 61-8787-9274-4422
-                          phr_address: example@ndhm
+                          ./dhp-0_7_1.health_id: 61-8787-9274-4422
+                          ./dhp-0_7_1.phr_address: example@ndhm
                         tags:
-                          teleconf_url: https://us06web.zoom.us/j/82071160538
+                          ./dhp-0_7_1.teleconf_url: https://us06web.zoom.us/j/82071160538
                       quote:
                         price:
                           currency: INR
                           value: '120'
                           breakup:
-                            - consultation: '100'
-                            - phr_handling_fees: '10'
-                            - cgst: '5'
-                            - sgst: '5'
+                            - ./dhp-0_7_1.consultation: '100'
+                            - ./dhp-0_7_1.phr_handling_fees: '10'
+                            - ./ind-gstin.cgst: '5'
+                            - ./ind-gstin.sgst: '5'
                       payment:
                         uri: payto://ban/98273982749428?amount=INR:110&ifsc=SBIN0000575&message=hello
                         type: ON-ORDER
                         status: PAID
-                        
+
               Prescription Generated:
                 value:
                   context:
@@ -1303,24 +1357,24 @@ paths:
                             start: T10:15Z
                             end: T10:30Z
                         customer:
-                          id: uhi://health_id/61-8787-9274-4422
-                          "@abdm/org/phr_address": example@ndhm
+                          ./nha.health_id: 61-8787-9274-4422
+                          ./nha.phr_address: example@ndhm
                         tags:
-                          teleconf_url: https://us06web.zoom.us/j/82071160538
+                          ./dhp-0_7_1.teleconf_url: https://us06web.zoom.us/j/82071160538
                       quote:
                         price:
                           currency: INR
                           value: '120'
                           breakup:
-                            - consultation: '100'
-                            - phr_handling_fees: '10'
-                            - cgst: '5'
-                            - sgst: '5'
+                            - ./dhp-0_7_1.consultation: '100'
+                            - ./dhp-0_7_1.phr_handling_fees: '10'
+                            - ./ind-gstin.cgst: '5'
+                            - ./ind-gstin.sgst: '5'
                       payment:
                         uri: payto://ban/98273982749428?amount=INR:110&ifsc=SBIN0000575&message=hello
                         type: ON-ORDER
                         status: PAID
-                        
+
               Consultation complete:
                 value:
                   context:
@@ -1372,24 +1426,24 @@ paths:
                             start: T10:15Z
                             end: T10:30Z
                         customer:
-                          health_id: 61-8787-9274-4422
-                          phr_address: example@ndhm
+                          ./nha.health_id: 61-8787-9274-4422
+                          ./nha.phr_address: example@ndhm
                         tags:
-                          teleconf_url: https://us06web.zoom.us/j/82071160538
+                          ./dhp-0_7_1.teleconf_url: https://us06web.zoom.us/j/82071160538
                       quote:
                         price:
                           currency: INR
                           value: '120'
                           breakup:
-                            - consultation: '100'
-                            - phr_handling_fees: '10'
-                            - cgst: '5'
-                            - sgst: '5'
+                            - ./dhp-0_7_1.consultation: '100'
+                            - ./dhp-0_7_1.phr_handling_fees: '10'
+                            - ./ind-gstin.cgst: '5'
+                            - ./ind-gstin.sgst: '5'
                       payment:
                         uri: payto://ban/98273982749428?amount=INR:110&ifsc=SBIN0000575&message=hello
                         type: ON-ORDER
                         status: PAID
-                        
+
               Health Records uploaded:
                 value:
                   context:
@@ -1441,19 +1495,19 @@ paths:
                             start: T10:15Z
                             end: T10:30Z
                         customer:
-                          health_id: 61-8787-9274-4422
-                          phr_address: example@ndhm
+                          ./nha.health_id: 61-8787-9274-4422
+                          ./nha.phr_address: example@ndhm
                         tags:
-                          teleconf_url: https://us06web.zoom.us/j/82071160538
+                          ./dhp-0_7_1.teleconf_url: https://us06web.zoom.us/j/82071160538
                       quote:
                         price:
                           currency: INR
                           value: '120'
                           breakup:
-                            - consultation: '100'
-                            - phr_handling_fees: '10'
-                            - cgst: '5'
-                            - sgst: '5'
+                            - ./dhp-0_7_1.consultation: '100'
+                            - ./dhp-0_7_1.phr_handling_fees: '10'
+                            - ./ind-gstin.cgst: '5'
+                            - ./ind-gstin.sgst: '5'
                       payment:
                         uri: payto://ban/98273982749428?amount=INR:110&ifsc=SBIN0000575&message=hello
                         type: ON-ORDER
@@ -1477,7 +1531,7 @@ paths:
                     $ref: '#/components/schemas/Error'
                 required:
                   - message
- 
+
 components:
   schemas:
     Ack:
@@ -1633,50 +1687,43 @@ components:
           $ref: '#/components/schemas/City/properties/code'
         action:
           type: string
-          description: Describes a specific order-lifecycle interaction that occurs between a BAP and a BPP. 
+          description: Defines the DHP API call. Any actions other than the enumerated actions are not supported by DHP Protocol
           enum:
             - search
             - select
             - init
             - confirm
             - status
-            - update
-            - track
-            - cancel
-            - rating
-            - support
             - on_search
             - on_select
             - on_init
             - on_confirm
             - on_status
-            - on_update
-            - on_track
-            - on_cancel
-            - on_rating
-            - on_support
-            - ack
         core_version:
           type: string
           description: Version of DHP core API specification being used
-        bap_id:
+        consumer_id:
           type: string
-          description: Unique Identifier of the BAP on a DHP-enabled network. Typically its the FQDN of the BAP
-        bap_uri:
+          format: uri
+          description: Unique id of the Consumer. By default it is the fully qualified domain name of the Consumer
+        consumer_uri:
           type: string
-          description: URI of the BAP for accepting callbacks. Must have the same domain name as the bap_id. HTTPS recommended for public networks
-        bpp_id:
+          format: uri
+          description: URI of the Consumer for accepting callbacks. Must have the same domain name as the consumer_id
+        provider_id:
           type: string
+          format: uri
           description: Unique id of the Provider. By default it is the fully qualified domain name of the Provider
-        bpp_uri:
+        provider_uri:
           type: string
+          format: uri
           description: URI of the Provider. Must have the same domain name as the provider_id
         transaction_id:
           type: string
-          description: Created by the BAP when calling the confirm API call. This is the network-level identifier of a confirmed order. All calls referring to a confirmed order must contain this value. Calls not referring to a confirmed order do not need to send transaction_id.  
+          description: This is a unique value which persists across all API calls from search through confirm
         message_id:
           type: string
-          description: UUID to map a request to a callback. Generated by the initiator of a request-callback cycle. It is used to match ansynchronous requests to callbacks. It is also used when unsolicited callback APIs are called. 
+          description: This is a unique value which persists during a request / callback cycle
         timestamp:
           type: string
           format: date-time
@@ -1687,6 +1734,17 @@ components:
         ttl:
           type: string
           description: The duration in ISO8601 format after timestamp for which this message holds valid
+      required:
+        - domain
+        - action
+        - country
+        - city
+        - core_version
+        - transaction_id
+        - message_id
+        - consumer_id
+        - consumer_uri
+        - timestamp
     Country:
       description: Describes a country.
       type: object
@@ -1779,10 +1837,12 @@ components:
               $ref: '#/components/schemas/Person'
             contact:
               $ref: '#/components/schemas/Contact'
-        agent:
+        Agent:
           $ref: '#/components/schemas/Agent'
+        person:
+          $ref: '#/components/schemas/Person'
         contact:
-          $ref: '#/components/schemas/Contcat'
+          $ref: '#/components/schemas/Contact'
         start:
           description: Details on the start of fulfillment
           type: object
@@ -1809,11 +1869,11 @@ components:
               $ref: '#/components/schemas/Person'
         tags:
           $ref: '#/components/schemas/Tags'
-    
+
     Image:
       description: 'Image of an object. <br/><br/> A url based image will look like <br/><br/>```uri:http://path/to/image``` <br/><br/>'
       type: string
-    
+
     Intent:
       description: Intent of a user. Used for searching for services
       type: object
@@ -1832,7 +1892,7 @@ components:
           $ref: '#/components/schemas/Item'
         tags:
           $ref: '#/components/schemas/Tags'
-            
+
     ItemQuantity:
       description: Describes count or amount of an item
       type: object
@@ -1911,7 +1971,7 @@ components:
       properties:
         code:
           type: string
-   
+
     Name:
       type: string
       description: 'Describes the name of a person in format: ./{given_name}/{honorific_prefix}/{first_name}/{middle_name}/{last_name}/{honorific_suffix}'
@@ -2006,7 +2066,7 @@ components:
             - currency
         type:
           type: string
-          descriptor: Stage at which the payment is expected
+          description: Stage at which the payment is expected
           enum:
             - ON-ORDER
             - PRE-FULFILLMENT
@@ -2076,7 +2136,7 @@ components:
           $ref: '#/components/schemas/DecimalValue'
         maximum_value:
           $ref: '#/components/schemas/DecimalValue'
-          
+
     Provider:
       description: 'Describes a service provider. This can be a restaurant, a hospital, a Store etc'
       type: object

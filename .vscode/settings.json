@@ -1,0 +1,7 @@
+{
+  "javascript.preferences.quoteStyle": "auto",
+  "typescript.preferences.quoteStyle": "single",
+  "yaml.schemas": {
+    "openapi:v3": "file:///g%3A/My%20Drive/tejcs.com/AllCode/Beckn/UHI/DHP-Specs/protocol-specifications/core/v0/api/core.yaml"
+  }
+}
