@@ -741,6 +741,44 @@ paths:
                               category_id: '1'
                               fulfillment_id: '4'
 
+              Show Test information on search result page:
+                value:
+                  context:
+                    domain: nic2004:851195
+                    country: IND
+                    city: std:080
+                    actio: select and add to cart
+                    core_version: 0.7.1
+                    message_id: 85a422c4-2867-4d72-b5f5-d31588e2f7c5
+                    timestamp: '2021-03-23T10:00:40.065Z'
+                    message:
+                      order:
+                        provider: id:'2'
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              $ref: '#/components/schemas/Item/properties/id'
+                            quantity:
+                              $ref: '#/components/schemas/ItemQuantity/properties/selected'
+                            fulfillment_id:
+                              $ref: '#/components/schemas/Fulfillment/properties/id'
+                            doctor_test_details:
+                              $ref: '#/components/schemas/doctor_test_details'
+                            patient_test_details:
+                              $ref: '#/components/schemas/patient_test_details'
+                            required:
+                              - id
+                            Price:
+                              $ref: '#/components/schemas/Price'
+                            sample_report:
+                              type: object
+                              properties:
+                                file:
+                                  type: array
+                                  items:
+                                    type: multipart/form-data
+                                    content: application/pdf
       responses:
         '200':
           description: Acknowledgement of message received
@@ -1971,6 +2009,30 @@ components:
       properties:
         code:
           type: string
+    diagnostic_Item:
+      description: Describes a disgnostic test item and allows a domain extension
+      type: object
+      properties:
+        diagnostic_item_name:
+          description: This is the most unique identifier of a service item. An example of an Item diagnostic_item_name could be the SKU of a product.
+          type: string
+          format: '#/components/schemas/Item/properties/id'
+        price:
+          $ref: '#/components/schemas/Price'
+        category_id:
+          $ref: '#/components/schemas/Category/properties/id'
+        fulfillment_id:
+          $ref: '#/components/schemas/Fulfillment/properties/id'
+        time:
+          $ref: '#/components/schemas/Time'
+        matched:
+          type: boolean
+        related:
+          type: boolean
+        recommended:
+          type: boolean
+        tags:
+          $ref: '#/components/schemas/Tags'
 
     Name:
       type: string
@@ -2328,3 +2390,52 @@ components:
           description: comma separated values representing days of the week
         schedule:
           $ref: '#/components/schemas/Schedule'
+    doctor_test_details:
+      description: contains complete information for the doctor about the test
+      type: object
+      properties:
+        label:
+          description: Describes the label is for pre-test information of the doctor.
+          type: string
+        report_delivery:
+          $ref: '#/components/schemas/Duration'
+        stability_room:
+          description: Sample stability at the room temprature
+          $ref: '#/components/schemas/Duration'
+        stability_refrigirated:
+          description: Sample stability when refrigirated
+          $ref: '#/components/schemas/Duration'
+        stability_frozen:
+          description: sample stability when frozen
+          $ref: '#/components/schemas/Duration'
+        method:
+          type: string
+        specimen:
+          type: string
+    patient_test_details:
+      description: contains complete information for the Patient about the test
+      type: object
+      properties:
+        label:
+          description: Describes the pre-test information for the Patient
+          type: string
+        report_delivery:
+          $ref: '#/components/schemas/Duration'
+
+        timestamp:
+          type: string
+          format: date-time
+        duration:
+          $ref: '#/components/schemas/Duration'
+        range:
+          type: object
+          properties:
+            start:
+              type: string
+              format: date-time
+            end:
+              type: string
+              format: date-time
+        days:
+          type: string
+          description: comma separated values representing days of the week
